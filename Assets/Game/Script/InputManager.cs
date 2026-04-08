@@ -5,11 +5,13 @@ using UnityEngine;
 public class InputManager : MonoBehaviour
 {
     public Action<Vector2> OnMoveInput;
+    public Action<bool> OnSprintInput;
+    public Action OnJumpInput;
 
     private void Update()
     {
         CheckMovementInput();
-        CheckShiftInput();
+        CheckSprintInput();
         CheckCrouchInput();
         CheckJumpInput();
         CheckViewChangeInput();
@@ -40,16 +42,31 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    private void CheckShiftInput()
+    private void CheckSprintInput()
     {
-        bool pressedSprintInput = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-        if (pressedSprintInput)
+        //bool pressedSprintInput = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+        bool isHoldSprintInput = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+        //if (pressedSprintInput)
+        //{
+        //    Debug.Log("Sprint");
+        //}
+        //else
+        //{
+        //    Debug.Log("No Sprint");
+        //}
+        if (isHoldSprintInput)
         {
-            Debug.Log("Sprint");
+            if (OnSprintInput != null)
+            {
+                OnSprintInput(true);
+            }
         }
         else
         {
-            Debug.Log("No Sprint");
+            if (OnSprintInput != null)
+            {
+                OnSprintInput(false);
+            }
         }
     }
 
@@ -71,7 +88,11 @@ public class InputManager : MonoBehaviour
         bool pressedJumpInput = Input.GetKeyDown(KeyCode.Space);
         if (pressedJumpInput)
         {
-            Debug.Log("Jump");
+            //Debug.Log("Jump");
+            if (OnJumpInput != null)
+            {
+                OnJumpInput();
+            }
         }
     }
 
