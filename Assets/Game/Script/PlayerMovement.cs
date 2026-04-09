@@ -28,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask _climbableLayer;
     [SerializeField] private Vector3 _climbOffset;
     [SerializeField] private float _climbSpeed;
+    [SerializeField] private Transform _cameraTransform;
 
     private Rigidbody _rigidbody;
 
@@ -36,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         _speed = _walkSpeed;
         _playerStance = PlayerStance.Stand;
+        HideAndLockCursor();
     }
 
     private void Start()
@@ -44,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
         _input.OnSprintInput += Sprint;
         _input.OnJumpInput += Jump;
         _input.OnClimbInput += StartClimb;
-        _input.OnCancelClimb -= CancelClimb;
+        _input.OnCancelClimb += CancelClimb;
     }
 
     private void Update()
@@ -73,8 +75,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (axisDirection.magnitude >= 0.1)
             {
-                float rotationAngle = Mathf.Atan2(axisDirection.x, axisDirection.y) * Mathf.Rad2Deg;
-                float smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, rotationAngle, ref _rotationSmoothVelocity, _rotationSmoothTime);
+                float rotationAngle = Mathf.Atan2(axisDirection.x, axisDirection.y) * Mathf.Rad2Deg + _cameraTransform.eulerAngles.y; float smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, rotationAngle, ref _rotationSmoothVelocity, _rotationSmoothTime);
                 transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
                 movementDirection = Quaternion.Euler(0f, rotationAngle, 0f) * Vector3.forward;
                 _rigidbody.AddForce(movementDirection * Time.deltaTime * _speed);
@@ -91,21 +92,15 @@ public class PlayerMovement : MonoBehaviour
 
     private void Sprint(bool isSprint)
     {
-        Debug.Log("in sprint function");
         if (isSprint)
         {
-            Debug.Log("speed" +_speed);
-            Debug.Log("sprint speed: " + _sprintSpeed);
-            Debug.Log("alkspeed" +_walkSpeed);
             if (_speed < _sprintSpeed)
             {
-                Debug.Log("in sprint if if");
                 _speed = _speed + _walkSprintTransition * Time.deltaTime;
             }
         }
         else
         {
-            Debug.Log("in sprint else");
             if (_speed > _walkSpeed)
             {
                 _speed = _speed - _walkSprintTransition * Time.deltaTime;
@@ -162,12 +157,19 @@ public class PlayerMovement : MonoBehaviour
 
     private void CancelClimb()
     {
+        Debug.Log("CancelClimb");
         if (_playerStance == PlayerStance.Climb)
         {
             _playerStance = PlayerStance.Stand;
             _rigidbody.useGravity = true;
             transform.position -= transform.forward * 1f;
         }
+    }
+
+    private void HideAndLockCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
 

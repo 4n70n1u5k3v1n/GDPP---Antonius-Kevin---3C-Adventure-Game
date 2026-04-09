@@ -131,7 +131,7 @@ public class InputManager : MonoBehaviour
         bool pressedCancelInput = Input.GetKeyDown(KeyCode.C);
         if (pressedCancelInput)
         {
-            //Debug.Log("Cancel");
+            Debug.Log("Cancel");
             if (OnCancelClimb != null)
             {
                 OnCancelClimb();
