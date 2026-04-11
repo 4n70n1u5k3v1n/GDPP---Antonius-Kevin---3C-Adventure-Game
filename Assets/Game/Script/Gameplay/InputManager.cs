@@ -9,6 +9,12 @@ public class InputManager : MonoBehaviour
     public Action OnJumpInput;
     public Action OnClimbInput;
     public Action OnCancelClimb;
+    public Action OnChangePOV;
+    public Action OnCrouchInput;
+    public Action OnGlideInput;
+    public Action OnCancelGlide;
+    public Action OnPunchInput;
+    public Action OnMainMenuInput;
 
     private void Update()
     {
@@ -16,21 +22,13 @@ public class InputManager : MonoBehaviour
         CheckSprintInput();
         CheckCrouchInput();
         CheckJumpInput();
-        CheckViewChangeInput();
         CheckClimbInput();
         CheckGlideInput();
         CheckCancelInput();
-        CheckHitInput();
-        CheckEscapeInput();
+        CheckPunchInput();
+        CheckMainMenuInput();
+        CheckChangePOVInput();
     }
-
-    //private void CheckMovementInput()
-    //{
-    //    float verticalAxis = Input.GetAxis("Vertical");
-    //    float horizontalAxis = Input.GetAxis("Horizontal");
-    //    Debug.Log("Vertical Axis" + verticalAxis);
-    //    Debug.Log("Horizontal Axis" + horizontalAxis);
-    //}
 
     private void CheckMovementInput()
     {
@@ -46,16 +44,8 @@ public class InputManager : MonoBehaviour
 
     private void CheckSprintInput()
     {
-        //bool pressedSprintInput = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
         bool isHoldSprintInput = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-        //if (pressedSprintInput)
-        //{
-        //    Debug.Log("Sprint");
-        //}
-        //else
-        //{
-        //    Debug.Log("No Sprint");
-        //}
+
         if (isHoldSprintInput)
         {
             if (OnSprintInput != null)
@@ -74,14 +64,10 @@ public class InputManager : MonoBehaviour
 
     private void CheckCrouchInput()
     {
-        bool pressedCrouchInput = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
+        bool pressedCrouchInput = Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl);
         if (pressedCrouchInput)
         {
-            Debug.Log("Crouch");
-        }
-        else
-        {
-            Debug.Log("No Crouch");
+            OnCrouchInput();
         }
     }
 
@@ -90,20 +76,10 @@ public class InputManager : MonoBehaviour
         bool pressedJumpInput = Input.GetKeyDown(KeyCode.Space);
         if (pressedJumpInput)
         {
-            //Debug.Log("Jump");
             if (OnJumpInput != null)
             {
                 OnJumpInput();
             }
-        }
-    }
-
-    private void CheckViewChangeInput()
-    {
-        bool pressedViewChangeInput = Input.GetKeyDown(KeyCode.Q);
-        if (pressedViewChangeInput)
-        {
-            Debug.Log("Change POV");
         }
     }
 
@@ -112,7 +88,6 @@ public class InputManager : MonoBehaviour
         bool pressedClimbInput = Input.GetKeyDown(KeyCode.E);
         if (pressedClimbInput)
         {
-            //Debug.Log("Climb");
             OnClimbInput();
         }
     }
@@ -122,7 +97,10 @@ public class InputManager : MonoBehaviour
         bool pressedGlideInput = Input.GetKeyDown(KeyCode.G);
         if (pressedGlideInput)
         {
-            Debug.Log("Glide");
+            if (OnGlideInput != null)
+            {
+                OnGlideInput();
+            }
         }
     }
 
@@ -131,29 +109,49 @@ public class InputManager : MonoBehaviour
         bool pressedCancelInput = Input.GetKeyDown(KeyCode.C);
         if (pressedCancelInput)
         {
-            Debug.Log("Cancel");
             if (OnCancelClimb != null)
             {
                 OnCancelClimb();
             }
+            if (OnCancelGlide != null)
+            {
+                OnCancelGlide();
+            }
         }
     }
 
-    private void CheckHitInput()
+    private void CheckPunchInput()
     {
-        bool pressedHitInput = Input.GetKeyDown(KeyCode.Mouse0);
-        if (pressedHitInput)
+        bool pressedPunchInput = Input.GetKeyDown(KeyCode.Mouse0);
+        if (pressedPunchInput)
         {
-            Debug.Log("Hit");
+            OnPunchInput();
         }
     }
 
-    private void CheckEscapeInput()
+    private void CheckMainMenuInput()
     {
-        bool pressedEscapeInput = Input.GetKeyDown(KeyCode.Escape);
-        if (pressedEscapeInput)
+        bool isPressMainMenuInput = Input.GetKeyDown(KeyCode.Escape);
+
+        if (isPressMainMenuInput)
         {
-            Debug.Log("Back to Main Menu");
+            if (OnMainMenuInput != null)
+            {
+                OnMainMenuInput();
+            }
+        }
+    }
+
+    private void CheckChangePOVInput()
+    {
+        bool isPressChangePOVInput = Input.GetKeyDown(KeyCode.Q);
+
+        if (isPressChangePOVInput)
+        {
+            if (OnChangePOV != null)
+            {
+                OnChangePOV();
+            }
         }
     }
 }
