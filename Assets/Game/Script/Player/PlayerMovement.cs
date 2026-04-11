@@ -162,7 +162,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-        if (_isGrounded)
+        if (_isGrounded && !_isPunching)
         {
             Vector3 jumpDirection = Vector3.up;
             _rigidbody.AddForce(jumpDirection * _jumpForce * Time.deltaTime);
@@ -207,6 +207,15 @@ public class PlayerMovement : MonoBehaviour
 
         if (isInFrontOfClimbingWall && _isGrounded && isNotClimbing)
         {
+            //Vector3 climablePoint = hit.collider.bounds.ClosestPoint(transform.position);
+            //Vector3 direction = (climablePoint - transform.forward).normalized;
+            Vector3 direction = -hit.normal;
+            direction.y = 0;
+            direction.Normalize();
+            //Debug.Log(direction);
+            //Debug.Log(transform.forward);
+            //Debug.Log(climablePoint - transform.forward);
+            transform.rotation = Quaternion.LookRotation(direction);
             _collider.center = Vector3.up * 1.3f;
             _animator.SetBool("IsClimbing", true);
             Vector3 offset = (transform.forward * _climbOffset.z) + (Vector3.up * _climbOffset.y);
@@ -302,7 +311,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Punch()
     {
-        if (!_isPunching && _playerStance == PlayerStance.Stand)
+        if (!_isPunching && _playerStance == PlayerStance.Stand && _isGrounded)
         {
             _isPunching = true;
             if (_combo < 3)
