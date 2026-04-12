@@ -163,7 +163,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Sprint(bool isSprint)
     {
-        if (isSprint)
+        if (isSprint && _playerStance == PlayerStance.Stand)
         {
             if (_speed < _sprintSpeed)
             {
