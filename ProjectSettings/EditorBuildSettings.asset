@@ -5,12 +5,18 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Game/Scenes/MainMenu.unity
     guid: a844fdbba07d35d4daa8f6e18643c592
-  - enabled: 1
+  - enabled: 0
     path: Assets/Game/Scenes/MainScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Final Build/Scene/ForestHill.unity
+    guid: aab9e9d8cdb46ed4d8784cde7230efc6
+  - enabled: 1
+    path: Assets/Final Build/Scene/MainMenuFinal.unity
+    guid: 7f1a9e8f84041a7489cd908216c35d6f
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -5,6 +5,7 @@ using Unity.Jobs.LowLevel.Unsafe;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
+using UnityEngine.Rendering;
 using UnityEngine.Windows;
 
 public class PlayerMovement : MonoBehaviour
@@ -50,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _hitDetectorRadius;
     [SerializeField] private LayerMask _hitLayer;
     [SerializeField] private PlayerAudioManager _playerAudioManager;
-
+    [SerializeField] private Transform _resetPosition;
     private Rigidbody _rigidbody;
 
     private void Awake()
@@ -377,6 +378,15 @@ public class PlayerMovement : MonoBehaviour
             {
                 Destroy(hitObjects[i].gameObject);
             }
+        }
+    }
+
+    public void ResetPositionToCheckpoint()
+    {
+        if (_resetPosition != null)
+        {
+            transform.position = _resetPosition.position;
+            transform.rotation = _resetPosition.rotation;
         }
     }
 

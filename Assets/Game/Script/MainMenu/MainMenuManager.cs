@@ -5,7 +5,7 @@ public class MainMenuManager : MonoBehaviour
 {
     public void Play()
     {
-        SceneManager.LoadScene("MainScene");
+        SceneManager.LoadScene("ForestHill");
     }
     public void Exit()
     {
